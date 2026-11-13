@@ -37,9 +37,9 @@ flowchart LR
 
 The shared ledger prevents inconsistent economics. Independent hand-calculated fixtures challenge mistakes shared by all methods. Historical-open and observed-quote adapters stay separate and labeled.
 
-## Planned interfaces and storage
+## Interfaces and storage
 
-Proposed CLI entry points: `kairos data`, `kairos train`, `kairos evaluate`, `kairos report`, `kairos paper`, `kairos ui`. They are design names, not working commands. Use standard-library argument parsing and TOML where practical; create only necessary modules under a future `src/kairos/` package.
+The implemented `src/kairos/` package exposes `kairos data`, `kairos train`, `kairos seal`, `kairos evaluate`, `kairos paper` and `kairos ui`. Evaluation writes a report as part of its output; there is no standalone `kairos report` command.
 
 | Artifact | Minimum content |
 |---|---|
@@ -55,9 +55,9 @@ Large data, models, raw runs and local state remain ignored. Commit only reviewe
 
 ## Tools and dependency budget
 
-Initial target Python 3.12, subject to stable package compatibility checks. Core: Gymnasium, SB3/PyTorch, NumPy/pandas and a basic plotting library. Viewer: Streamlit; add Plotly only for the candlestick/exit inspector, with native charts for simple plots. SQLite, hashing, logging and config parsing use the standard library.
+The package requires Python 3.11 or newer. Its declared dependencies include Gymnasium, Stable-Baselines3/PyTorch, NumPy, pandas, scikit-learn, Streamlit and Plotly; `uv.lock` records the resolved environment. SQLite and hashing use the standard library.
 
-No frontend build toolchain, web API, tracking server, broker service or authentication system is needed for a localhost demo. Archive download must preserve TLS verification; system curl is a valid initial transport if Python's local CA setup is unresolved. Pin a tested environment during implementation, not an invented lock now.
+No frontend build toolchain, web API, tracking server, broker service or authentication system is needed for the local viewer. The archive downloader uses system curl with normal TLS verification; reproducibility commands use the committed lock file.
 
 Backtesting.py is an optional independent development cross-check. Freqtrade is a possible later candle-based paper adapter; NautilusTrader offers a later execution integration. Neither is required to learn/test this exit policy, and reconciling a second engine is deferred.
 
